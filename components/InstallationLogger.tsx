@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useGeolocation } from '../hooks/useGeolocation';
 import { runOCRVault } from '../services/geminiService';
-import { BackIcon, CameraIcon } from '../icons';
+import { BackIcon, CameraIcon, SolarIcon } from '../icons';
 
 const InstallationLogger: React.FC<{ goBack: () => void }> = ({ goBack }) => {
   const { location } = useGeolocation();
@@ -112,16 +112,17 @@ const InstallationLogger: React.FC<{ goBack: () => void }> = ({ goBack }) => {
           />
         </div>
 
-        <div className="flex items-center">
+        <div className="flex items-center justify-start p-3 rounded-lg bg-theme-white dark:bg-theme-dark transition-colors">
             <input
                 id="isSolar"
                 type="checkbox"
                 checked={isSolar}
                 onChange={(e) => setIsSolar(e.target.checked)}
-                className="h-4 w-4 text-accent-orange border-gray-300 rounded focus:ring-accent-orange"
+                className="h-5 w-5 text-accent-orange border-gray-300 rounded focus:ring-accent-orange"
             />
-            <label htmlFor="isSolar" className="ml-2 block text-sm font-medium text-text-light-primary dark:text-text-dark-primary">
+            <label htmlFor="isSolar" className="ml-3 flex items-center text-md font-medium text-text-light-primary dark:text-text-dark-primary cursor-pointer">
                 Solar-Powered Unit
+                <SolarIcon className={`w-6 h-6 ml-2 transition-colors ${isSolar ? 'text-accent-orange' : 'text-gray-300 dark:text-gray-600'}`} />
             </label>
         </div>
         
