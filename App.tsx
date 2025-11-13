@@ -8,12 +8,15 @@ import AnalyticsDashboard from './components/AnalyticsDashboard';
 import MapView from './components/MapView';
 import Login from './components/Login';
 import AccessManagement from './components/AccessManagement';
+import GBVSafetyModule from './components/GBVSafetyModule';
+import { syncOfflineData } from './services/safetyService';
 import type { View } from './types';
 
 const App: React.FC = () => {
   const [view, setView] = useState<View>('dashboard');
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isSafetyModuleVisible, setIsSafetyModuleVisible] = useState(false);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -22,6 +25,26 @@ const App: React.FC = () => {
       document.documentElement.classList.remove('dark');
     }
   }, [isDarkMode]);
+  
+  // Effect for handling offline data synchronization
+  useEffect(() => {
+    const handleOnline = () => {
+      console.log('Device is back online. Syncing offline data...');
+      syncOfflineData();
+    };
+
+    window.addEventListener('online', handleOnline);
+
+    // Initial check in case the app loads while online
+    if (navigator.onLine) {
+      syncOfflineData();
+    }
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+    };
+  }, []);
+
 
   const handleLogin = () => {
     setIsAuthenticated(true);
@@ -30,6 +53,11 @@ const App: React.FC = () => {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
+  };
+
+  const handleQuickExit = () => {
+    setIsSafetyModuleVisible(false);
+    setView('dashboard');
   };
 
   const renderView = () => {
@@ -61,10 +89,17 @@ const App: React.FC = () => {
         isDarkMode={isDarkMode} 
         toggleDarkMode={() => setIsDarkMode(!isDarkMode)}
         onLogout={handleLogout}
+        onToggleSafetyModule={() => setIsSafetyModuleVisible(!isSafetyModuleVisible)}
       />
       <main className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
         {renderView()}
       </main>
+      {isSafetyModuleVisible && (
+        <GBVSafetyModule
+          onClose={() => setIsSafetyModuleVisible(false)}
+          onQuickExit={handleQuickExit}
+        />
+      )}
     </div>
   );
 };

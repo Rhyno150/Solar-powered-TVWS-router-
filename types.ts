@@ -31,3 +31,16 @@ export interface RegisteredUser {
   unitId: string;
   registeredAt: string;
 }
+
+// GBV Safety Module Types
+export interface SosPayload {
+  userId: string;
+  timestamp: string;
+  location: GpsData | null;
+}
+
+export interface GbvReportPayload {
+  reportId: string;
+  report: string;
+  timestamp: string;
+}
