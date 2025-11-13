@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { BackIcon } from '../icons';
+import { BackIcon, SolarIcon } from '../icons';
 import type { InstallationLog } from '../types';
 
 const MapView: React.FC<{ goBack: () => void }> = ({ goBack }) => {
@@ -104,7 +104,10 @@ const MapView: React.FC<{ goBack: () => void }> = ({ goBack }) => {
                 minWidth: '200px'
               }}
             >
-              <p className="font-bold">{hoveredLog.unitId}</p>
+              <div className="flex justify-between items-center font-bold">
+                <p>{hoveredLog.unitId}</p>
+                {hoveredLog.isSolarPowered && <SolarIcon className="w-4 h-4 text-yellow-300" title="Solar-Powered" />}
+              </div>
               <p className="text-xs text-gray-300">
                 {hoveredLog.location.latitude.toFixed(4)}, {hoveredLog.location.longitude.toFixed(4)}
               </p>

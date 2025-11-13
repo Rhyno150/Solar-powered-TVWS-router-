@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { generateNetworkReport } from '../services/geminiService';
-import { BackIcon, AnalyticsIcon, DownloadIcon } from '../icons';
+import { BackIcon, AnalyticsIcon, DownloadIcon, SolarIcon } from '../icons';
 import LineChart from './LineChart';
 import type { InstallationLog } from '../types';
 
@@ -65,7 +65,7 @@ const AnalyticsDashboard: React.FC<{ goBack: () => void }> = ({ goBack }) => {
   const handleDownloadData = () => {
     if (fullLogs.length === 0) return;
 
-    const headers = ['unitId', 'latitude', 'longitude', 'timestamp', 'notes'];
+    const headers = ['unitId', 'latitude', 'longitude', 'timestamp', 'notes', 'isSolarPowered'];
     const csvRows = fullLogs.map(log => {
       // Escape commas in notes by wrapping the string in double quotes
       const notes = `"${log.notes.replace(/"/g, '""')}"`;
@@ -74,7 +74,8 @@ const AnalyticsDashboard: React.FC<{ goBack: () => void }> = ({ goBack }) => {
         log.location.latitude,
         log.location.longitude,
         log.timestamp,
-        notes
+        notes,
+        log.isSolarPowered ? 'Yes' : 'No'
       ].join(',');
     });
 
@@ -152,7 +153,10 @@ const AnalyticsDashboard: React.FC<{ goBack: () => void }> = ({ goBack }) => {
             <div className="space-y-3">
               {activityLog.map(log => (
                 <div key={log.unitId} className="p-3 bg-theme-white dark:bg-theme-dark rounded-lg">
-                  <p className="font-bold text-text-light-primary dark:text-text-dark-primary">Unit ID: {log.unitId}</p>
+                  <div className="flex justify-between items-start">
+                    <p className="font-bold text-text-light-primary dark:text-text-dark-primary">Unit ID: {log.unitId}</p>
+                    {log.isSolarPowered && <SolarIcon className="w-5 h-5 text-accent-orange" title="Solar-Powered" />}
+                  </div>
                   <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
                     {new Date(log.timestamp).toLocaleString()} - {log.location.latitude.toFixed(2)}, {log.location.longitude.toFixed(2)}
                   </p>

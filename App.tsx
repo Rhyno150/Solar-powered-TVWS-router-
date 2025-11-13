@@ -7,6 +7,7 @@ import Diagnostics from './components/Diagnostics';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
 import MapView from './components/MapView';
 import Login from './components/Login';
+import AccessManagement from './components/AccessManagement';
 import type { View } from './types';
 
 const App: React.FC = () => {
@@ -43,6 +44,8 @@ const App: React.FC = () => {
         return <AnalyticsDashboard goBack={() => setView('dashboard')} />;
       case 'map':
         return <MapView goBack={() => setView('dashboard')} />;
+      case 'access':
+        return <AccessManagement goBack={() => setView('dashboard')} />;
       default:
         return <Dashboard setView={setView} />;
     }

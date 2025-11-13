@@ -1,6 +1,6 @@
 import React from 'react';
 import type { View } from '../types';
-import { SpectrumIcon, LogIcon, DiagnosticIcon, AnalyticsIcon, MapIcon } from '../icons';
+import { SpectrumIcon, LogIcon, DiagnosticIcon, AnalyticsIcon, MapIcon, UsersIcon } from '../icons';
 
 interface DashboardProps {
   setView: (view: View) => void;
@@ -48,6 +48,14 @@ const Dashboard: React.FC<DashboardProps> = ({ setView }) => {
         description="Log new deployments with OCR-assisted unit ID."
         iconBgColor="bg-accent-orange-light"
         focusRingColor="focus:ring-accent-orange-light/50"
+      />
+       <DashboardButton
+        onClick={() => setView('access')}
+        icon={<UsersIcon className="w-8 h-8" />}
+        title="Community Access"
+        description="Manage registered users for secure hotspots."
+        iconBgColor="bg-accent-orange"
+        focusRingColor="focus:ring-accent-orange/50"
       />
       <DashboardButton
         onClick={() => setView('diagnostics')}

@@ -10,6 +10,7 @@ const InstallationLogger: React.FC<{ goBack: () => void }> = ({ goBack }) => {
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isSolar, setIsSolar] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -46,7 +47,7 @@ const InstallationLogger: React.FC<{ goBack: () => void }> = ({ goBack }) => {
     }
     setStatusMessage(`Installation logged successfully for Unit ${unitId} at ${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}.`);
     // Here you would typically send data to a server
-    console.log({ unitId, notes, location, photoName: photo?.name });
+    console.log({ unitId, notes, location, photoName: photo?.name, isSolar });
   };
 
   return (
@@ -109,6 +110,19 @@ const InstallationLogger: React.FC<{ goBack: () => void }> = ({ goBack }) => {
             className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-accent-orange focus:border-accent-orange sm:text-sm"
             placeholder="Antenna height, line-of-sight observations, etc."
           />
+        </div>
+
+        <div className="flex items-center">
+            <input
+                id="isSolar"
+                type="checkbox"
+                checked={isSolar}
+                onChange={(e) => setIsSolar(e.target.checked)}
+                className="h-4 w-4 text-accent-orange border-gray-300 rounded focus:ring-accent-orange"
+            />
+            <label htmlFor="isSolar" className="ml-2 block text-sm font-medium text-text-light-primary dark:text-text-dark-primary">
+                Solar-Powered Unit
+            </label>
         </div>
         
         {statusMessage && <p className="text-center text-sm font-semibold">{statusMessage}</p>}

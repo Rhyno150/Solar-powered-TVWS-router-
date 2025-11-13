@@ -1,4 +1,4 @@
-export type View = 'dashboard' | 'spectrum' | 'logging' | 'diagnostics' | 'analytics' | 'map';
+export type View = 'dashboard' | 'spectrum' | 'logging' | 'diagnostics' | 'analytics' | 'map' | 'access';
 
 export interface GpsData {
   latitude: number;
@@ -21,4 +21,13 @@ export interface InstallationLog {
   location: GpsData;
   timestamp: string;
   notes: string;
+  isSolarPowered?: boolean;
+}
+
+export interface RegisteredUser {
+  id: string;
+  name: string;
+  contact: string; // e.g., email or phone
+  unitId: string;
+  registeredAt: string;
 }

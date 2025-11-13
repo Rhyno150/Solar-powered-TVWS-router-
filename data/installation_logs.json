@@ -6,7 +6,8 @@
       "longitude": -82.9988
     },
     "timestamp": "2024-06-15T14:30:00Z",
-    "notes": "Clear line of sight to tower."
+    "notes": "Clear line of sight to tower.",
+    "isSolarPowered": true
   },
   {
     "unitId": "TW-8B2E4D",
@@ -15,7 +16,8 @@
       "longitude": -82.9988
     },
     "timestamp": "2024-07-22T10:05:00Z",
-    "notes": "Minor tree obstruction."
+    "notes": "Minor tree obstruction.",
+    "isSolarPowered": true
   },
   {
     "unitId": "TW-1C7F0B",
@@ -24,7 +26,8 @@
       "longitude": -83.5379
     },
     "timestamp": "2024-05-01T09:15:00Z",
-    "notes": "Installed on rooftop."
+    "notes": "Installed on rooftop.",
+    "isSolarPowered": true
   },
   {
     "unitId": "TW-A3D6E9",
@@ -33,7 +36,8 @@
       "longitude": -84.5120
     },
     "timestamp": "2024-06-28T16:45:00Z",
-    "notes": "Excellent signal strength."
+    "notes": "Excellent signal strength.",
+    "isSolarPowered": true
   },
   {
     "unitId": "TW-4E0B3C",
@@ -42,7 +46,8 @@
       "longitude": -81.6944
     },
     "timestamp": "2024-07-11T11:20:00Z",
-    "notes": "Slight interference from nearby radio."
+    "notes": "Slight interference from nearby radio.",
+    "isSolarPowered": true
   },
   {
     "unitId": "TW-9F5A8E",
