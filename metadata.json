@@ -1,0 +1,9 @@
+{
+  "name": "TVWS Connect Mapper",
+  "description": "A mobile-first web application for TV White Space (TVWS) Field Technicians to map spectrum, monitor signals, log installations with OCR, and run diagnostics using Gemini AI.",
+  "requestFramePermissions": [
+    "geolocation",
+    "camera",
+    "microphone"
+  ]
+}

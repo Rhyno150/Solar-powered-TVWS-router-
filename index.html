@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TVWS Connect Mapper</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              // Light Theme
+              'theme-white': '#FFFFFF',
+              'theme-light-gray': '#F9FAFB',
+              'text-light-primary': '#1F2937',
+              'text-light-secondary': '#6B7280',
+
+              // Dark Theme (Now Gray-based)
+              'theme-dark': '#111827',
+              'theme-dark-secondary': '#1F2937',
+              'text-dark-primary': '#F3F4F6',
+              'text-dark-secondary': '#D1D5DB',
+
+              // Accent Colors
+              'accent-orange': '#F97316',
+              'accent-orange-light': '#FB923C',
+              'accent-orange-dark': '#EA580C',
+            },
+          },
+        },
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.1",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+</head>
+  <body class="bg-theme-white dark:bg-theme-dark text-text-light-primary dark:text-dark-primary">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
