@@ -1,6 +1,6 @@
 import React from 'react';
 import type { View } from '../types';
-import { SpectrumIcon, LogIcon, DiagnosticIcon, AnalyticsIcon, MapIcon, UsersIcon } from '../icons';
+import { SpectrumIcon, LogIcon, DiagnosticIcon, AnalyticsIcon, UsersIcon } from '../icons';
 
 interface DashboardProps {
   setView: (view: View) => void;
@@ -72,14 +72,6 @@ const Dashboard: React.FC<DashboardProps> = ({ setView }) => {
         description="View performance dashboards and generate reports."
         iconBgColor="bg-accent-orange-light"
         focusRingColor="focus:ring-accent-orange-light/50"
-      />
-      <DashboardButton
-        onClick={() => setView('map')}
-        icon={<MapIcon className="w-8 h-8" />}
-        title="Installation Map"
-        description="Visualize all network installation locations."
-        iconBgColor="bg-accent-orange-dark"
-        focusRingColor="focus:ring-accent-orange-dark/50"
       />
     </div>
   );

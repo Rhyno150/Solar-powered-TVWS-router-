@@ -5,7 +5,6 @@ import SpectrumMonitor from './components/SpectrumMonitor';
 import InstallationLogger from './components/InstallationLogger';
 import Diagnostics from './components/Diagnostics';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
-import MapView from './components/MapView';
 import Login from './components/Login';
 import AccessManagement from './components/AccessManagement';
 import GBVSafetyModule from './components/GBVSafetyModule';
@@ -70,8 +69,6 @@ const App: React.FC = () => {
         return <Diagnostics goBack={() => setView('dashboard')} />;
       case 'analytics':
         return <AnalyticsDashboard goBack={() => setView('dashboard')} />;
-      case 'map':
-        return <MapView goBack={() => setView('dashboard')} />;
       case 'access':
         return <AccessManagement goBack={() => setView('dashboard')} />;
       default:

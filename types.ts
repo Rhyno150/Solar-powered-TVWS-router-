@@ -1,4 +1,4 @@
-export type View = 'dashboard' | 'spectrum' | 'logging' | 'diagnostics' | 'analytics' | 'map' | 'access';
+export type View = 'dashboard' | 'spectrum' | 'logging' | 'diagnostics' | 'analytics' | 'access';
 
 export interface GpsData {
   latitude: number;
