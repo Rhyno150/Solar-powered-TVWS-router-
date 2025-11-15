@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { generateNetworkReport } from '../services/geminiService';
-import { BackIcon, AnalyticsIcon, DownloadIcon, SolarIcon } from '../icons';
+import { BackIcon, AnalyticsIcon, DownloadIcon, SolarIcon, UploadIcon } from '../icons';
 import LineChart from './LineChart';
 import type { InstallationLog } from '../types';
 
@@ -23,6 +23,9 @@ const AnalyticsDashboard: React.FC<{ goBack: () => void }> = ({ goBack }) => {
   const [activityLog, setActivityLog] = useState<InstallationLog[]>([]);
   const [fullLogs, setFullLogs] = useState<InstallationLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
 
   useEffect(() => {
     fetch('/data/installation_logs.json')
@@ -42,7 +45,7 @@ const AnalyticsDashboard: React.FC<{ goBack: () => void }> = ({ goBack }) => {
       })
       .catch(error => {
         console.error("Failed to load installation logs:", error);
-        // You could set an error state here to show in the UI
+        setStatusMessage("Failed to load default installation logs.");
       })
       .finally(() => {
         setIsLoading(false);
@@ -91,6 +94,54 @@ const AnalyticsDashboard: React.FC<{ goBack: () => void }> = ({ goBack }) => {
     URL.revokeObjectURL(url);
   };
 
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    if (file.type !== 'application/json') {
+      setStatusMessage('Error: Please upload a valid JSON file.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const text = e.target?.result;
+        if (typeof text !== 'string') {
+          throw new Error('File content is not readable');
+        }
+        const data: InstallationLog[] = JSON.parse(text);
+        
+        // Basic validation
+        if (!Array.isArray(data) || (data.length > 0 && (!data[0].unitId || !data[0].location))) {
+           throw new Error('Invalid data structure in JSON file.');
+        }
+
+        setFullLogs(data);
+        setActivityLog(data.slice(0, 5));
+        setStats(prevStats => ({
+          ...prevStats,
+          totalInstallations: data.length,
+        }));
+        setStatusMessage(`Successfully loaded ${data.length} records from ${file.name}.`);
+      } catch (error) {
+        console.error('Error parsing uploaded file:', error);
+        setStatusMessage('Error: Could not parse the uploaded file. Please ensure it is a valid JSON array of installation logs.');
+      }
+    };
+    reader.onerror = () => {
+        setStatusMessage('Error reading the file.');
+    };
+    reader.readAsText(file);
+    
+    // Reset file input value to allow re-uploading the same file
+    if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+    }
+  };
+
   const StatCard: React.FC<{ title: string; value: string | number; }> = ({ title, value }) => (
     <div className="bg-theme-white dark:bg-theme-dark p-4 rounded-lg text-center shadow-inner">
         <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">{title}</p>
@@ -121,7 +172,29 @@ const AnalyticsDashboard: React.FC<{ goBack: () => void }> = ({ goBack }) => {
 
         <div className="mb-6">
           <h3 className="text-xl font-semibold mb-2">Data &amp; Reports</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          
+          {statusMessage && (
+            <div className="mb-4 p-3 bg-accent-purple-light dark:bg-accent-purple-dark-bg text-accent-purple-text dark:text-accent-purple-dark-text rounded-lg text-center text-sm" role="alert">
+                <p>{statusMessage}</p>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+              accept="application/json"
+              className="hidden"
+              aria-hidden="true"
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full flex items-center justify-center py-3 px-4 bg-accent-purple-text text-white font-semibold rounded-lg shadow-md hover:bg-accent-purple disabled:bg-gray-400 transition-colors duration-300"
+            >
+              <UploadIcon className="w-6 h-6 mr-2"/>
+              Upload Dataset
+            </button>
             <button
               onClick={handleGenerateReport}
               disabled={isGenerating}
@@ -149,10 +222,10 @@ const AnalyticsDashboard: React.FC<{ goBack: () => void }> = ({ goBack }) => {
           <h3 className="text-xl font-semibold mb-2">Recent Activity Log</h3>
           {isLoading ? (
              <p className="text-center text-text-light-secondary dark:text-text-dark-secondary">Loading activity...</p>
-          ) : (
+          ) : activityLog.length > 0 ? (
             <div className="space-y-3">
               {activityLog.map(log => (
-                <div key={log.unitId} className="p-3 bg-theme-white dark:bg-theme-dark rounded-lg">
+                <div key={log.unitId + log.timestamp} className="p-3 bg-theme-white dark:bg-theme-dark rounded-lg">
                   <div className="flex justify-between items-start">
                     <p className="font-bold text-text-light-primary dark:text-text-dark-primary">Unit ID: {log.unitId}</p>
                     {log.isSolarPowered && <SolarIcon className="w-5 h-5 text-accent-orange" title="Solar-Powered" />}
@@ -164,6 +237,8 @@ const AnalyticsDashboard: React.FC<{ goBack: () => void }> = ({ goBack }) => {
                 </div>
               ))}
             </div>
+          ) : (
+            <p className="text-center text-text-light-secondary dark:text-text-dark-secondary">No activity to display.</p>
           )}
         </div>
       </div>
